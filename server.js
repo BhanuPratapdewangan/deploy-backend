@@ -8,13 +8,24 @@ import { } from './db/config.js';
 import userModel from "./db/user.js";
 
 const app = express();
-const port = process.env.PORT || "mongodb+srv://bhanupratap04123:rieocQN2ePiBBJ5u@cluster0.1j9ymic.mongodb.net/?retryWrites=true&w=majority";
+const port = process.env.PORT || 4600;
 const jwtKey = "deploy";
 
 // Middleware
 // app.use(urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
+
+app.get('/users', verifyToken,  async(req, res) => {
+
+    let data = await userModel.find();
+    if(data)
+    {
+        res.send(data);
+    } else{
+        res.send("Data not found");
+    }
+})
 
 //SignUp Route 
 app.post('/signup', async (req, res) => {
@@ -53,24 +64,24 @@ app.post('/signin', async (req, res) => {
     }
 });
 
-// function verifyToken(req, res, next) {
+function verifyToken(req, res, next) {
 
-//     let token = req.headers["authorization"];
+    let token = req.headers["authorization"];
 
-//     if (token) {
-//         token = token.split(' ')[1];
-//         Jwt.verify(token, jwtKey, (err, valid) => {
-//             if (err) {
-//                 res.status(403).send({ result: "Please enter correct token with headers" });
-//             } else {
-//                 next();
-//             }
-//         })
-//     } else {
-//         res.status(401).send({ result: "Please provide token with headers" });
-//     }
-//     // console.log("Middleware created...!", token);
-// }
+    if (token) {
+        token = token.split(' ')[1];
+        Jwt.verify(token, jwtKey, (err, valid) => {
+            if (err) {
+                res.status(403).send({ result: "Please enter correct token with headers" });
+            } else {
+                next();
+            }
+        })
+    } else {
+        res.status(401).send({ result: "Please provide token with headers" });
+    }
+    // console.log("Middleware created...!", token);
+}
 
 // Listen server on port number 3001
 app.listen(port, () => {
