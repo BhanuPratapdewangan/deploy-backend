@@ -8,7 +8,7 @@ import { } from './db/config.js';
 import userModel from "./db/user.js";
 
 const app = express();
-const port = process.env.PORT || 4800;
+const port = process.env.PORT || "mongodb+srv://bhanupratap04123:rieocQN2ePiBBJ5u@cluster0.1j9ymic.mongodb.net/?retryWrites=true&w=majority";
 const jwtKey = "deploy";
 
 // Middleware
