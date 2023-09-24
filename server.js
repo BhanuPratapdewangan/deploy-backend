@@ -83,7 +83,7 @@ function verifyToken(req, res, next) {
     // console.log("Middleware created...!", token);
 }
 
-// Listen server on port number 3001
+// Listen server on port number 4600
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
